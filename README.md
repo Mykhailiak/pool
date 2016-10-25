@@ -1,4 +1,4 @@
-# pool
+# Pool
 
 #### Course Project
 ______________________
