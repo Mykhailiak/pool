@@ -1,6 +1,6 @@
 # pool
 
-Course Project
+## Course Project
 ______________________
 
 To deploy the project on your machine do items below:
