@@ -1,17 +1,20 @@
 import * as PIXI from 'pixi.js';
 
-const renderer = PIXI.autoDetectRenderer(900, 550, {backgroundColor: 0x1099bb}),
+var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {backgroundColor: 0x1099bb}),
 		stage = new PIXI.Container();
 
 document.body.appendChild(renderer.view);
 
 PIXI.loader
-	.add('resources/treasureHunter.json')
+	.add('resources/table.png')
 	.load((e) => {
-		let table = new PIXI.Sprite(PIXI.loader.resources['resources/treasureHunter.json'].textures['blob.png']);
-		stage.addChild(table);
+		let table = new PIXI.Sprite(PIXI.loader.resources['resources/table.png'].texture);
 
-		console.log('e', table);
+		table.scale.set(0.61, 0.61);
+
+		table.position.set(renderer.view.width / 2 - table.width / 2, renderer.view.height / 2 - table.height / 2);
+
+		stage.addChild(table);
 
 		renderer.render(stage);
 	});
