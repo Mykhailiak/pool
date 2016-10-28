@@ -1,0 +1,48 @@
+{"frames": {
+
+"8ballpoolset-transparent.png":
+{
+	"frame": {"x":293,"y":21,"w":1136,"h":640},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1136,"h":640},
+	"sourceSize": {"w":1136,"h":640},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"kuy-2.png":
+{
+	"frame": {"x":636,"y":1,"w":770,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":770,"h":18},
+	"sourceSize": {"w":770,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"kuy.png":
+{
+	"frame": {"x":1,"y":1,"w":633,"h":18},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":633,"h":18},
+	"sourceSize": {"w":633,"h":18},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"triangle.png":
+{
+	"frame": {"x":1,"y":21,"w":290,"h":253},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":290,"h":253},
+	"sourceSize": {"w":290,"h":253},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bas_textures.png",
+	"format": "RGBA8888",
+	"size": {"w":1430,"h":662},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d433d1ab7a9fdc8a9ff54c8609adc24f:17f651a34b84a32a85ad249402fa6552:7f464129597c2fc8f99611974494fad1$"
+}
+}
