@@ -36,6 +36,9 @@ PIXI.loader
 		ball1.position.set(200, poolScene.height / 2 - ball1.height / 2);
 		ball2.position.set(1000, (poolScene.height / 2 - ball2.height / 2));
 
+		ball1.circular = true;
+		ball2.circular = true;
+
 		poolScene.hitArea = new PIXI.Rectangle(51, 51, 1022, 523);
 
 		stage.addChild(gameScene);
@@ -49,14 +52,30 @@ PIXI.loader
 
 		window.poolScene = poolScene;
 
+		ball1.vx = 10;
+		ball1.vy = 10;
+		ball2.vx = 3;
 		function animation() {
-			ball1.vx = 4;
 
+			ball1.y += ball1.vy;
 			ball1.x += ball1.vx;
 
-			if(bump.hitTestRectangle(ball1, ball2)) {
-				console.log('colllaaaapse');
+			ball2.x += ball2.vx;
+
+			bump.contain(ball1, {x: 51, y: 51, width: 1082, height: 592}, true, (val) => {
+				console.log('Collapse', val);
+			});
+
+
+			if(bump.hit(ball1, ball2, true, true)) {
+				console.log('collapse', ball1.vx);
 			}
+
+			// console.log();
+
+			// if(bump.hitTestRectangle(ball1, poolScene.hitArea)) {
+			// 	console.log('boo');
+			// }
 
 			requestAnimationFrame(animation);
 
