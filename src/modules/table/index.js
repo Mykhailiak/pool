@@ -1,5 +1,7 @@
 import * as Bump from 'bump.js';
+import physics from 'physics/build/physics.min.js';
 import * as PIXI from 'pixi.js';
+
 
 var renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {backgroundColor: 0x046131}),
 		stage = new PIXI.Container();
@@ -15,8 +17,8 @@ PIXI.loader
 	.add('resources/balls.json')
 	.load((e) => {
 		let basic = PIXI.loader.resources['resources/bas_textures.json'].textures,
-				balls = PIXI.loader.resources['resources/balls.json'].textures,
-				ballsArray = [];
+				ballsTexture = PIXI.loader.resources['resources/balls.json'].textures,
+				balls = [];
 
 		// game scene containers:
 		let gameScene = new PIXI.Container(),
@@ -33,13 +35,13 @@ PIXI.loader
 		poolScene.position.set(renderer.width / 2 - poolScene.width / 2, renderer.height / 2 - poolScene.height / 2);
 
 		for(let i = 1; i <= 15; i++) {
-			var ball = new PIXI.Sprite(balls[`ball${i}.png`]);
+			var ball = new PIXI.Sprite(ballsTexture[`ball${i}.png`]);
 
 			ball.position.set(i * 32 + xOffset, i * 32 + yOffset);
-			ballsArray.push(ball);
+			balls.push(ball);
 
-			ball.vx = 0;
-			ball.vy = 0;
+			ball.vx = Math.floor(Math.random() * 10);
+			ball.vy = Math.floor(Math.random() * 10);
 
 			poolScene.addChild(ball);
 		}
@@ -52,6 +54,17 @@ PIXI.loader
 		stage.addChild(poolScene);
 
 		function animation() {
+
+			balls.map((ball) => {
+
+				ball.x += ball.vx;
+				ball.y += ball.vy;
+
+				bump.contain(ball, {x: 51, y: 53, width: 1088, height: 588}, true, () => {
+					// handler
+				});
+
+			});
 
 			requestAnimationFrame(animation);
 

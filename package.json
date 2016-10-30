@@ -30,6 +30,8 @@
     "csslint": "^1.0.3",
     "csslint-loader": "^1.0.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "p2": "^0.7.1",
+    "physics": "^1.0.1",
     "pixi.js": "^4.1.0",
     "postcss-loader": "^1.0.0",
     "style-loader": "^0.13.1",
