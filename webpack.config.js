@@ -38,7 +38,9 @@ module.exports = {
 			}
 		],
 		noParse: [
-			/.*(pixi\.js).*/
+			/.*(pixi\.js).*/,
+			/.*(physics).*/,
+			/.*(p2).*/
 		]
 	},
 	plugins: [
