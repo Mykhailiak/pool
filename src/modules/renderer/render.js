@@ -125,14 +125,14 @@ export default class Render {
 	}
 
 	drawCue() {
-		let cue = new PIXI.Sprite(this.textures.basic['kuy.png']);
+		this.cue = new PIXI.Sprite(this.textures.basic['kuy.png']);
 
-		this.scenes.container.addChild(cue);
-		cue.position.set(this.whiteBall.position.x, this.whiteBall.position.y);
-		cue.anchor.x = 1.05
-		cue.anchor.y = 0.5
+		this.scenes.container.addChild(this.cue);
+		this.cue.position.set(this.whiteBall.position.x, this.whiteBall.position.y);
+		this.cue.anchor.x = 1.05
+		this.cue.anchor.y = 0.5
 
-		cue.scale.set(1 / 100);
+		this.cue.scale.set(1 / 100);
 	}
 
 	animate(time) {
@@ -141,11 +141,15 @@ export default class Render {
 		this.world.step(1 / 60);
 
 		this.balls.forEach((ball) => {
-			ball.view.position.x = ball.physics.position[0]
-			ball.view.position.y = ball.physics.position[1]
+			ball.view.position.x = ball.physics.position[0];
+			ball.view.position.y = ball.physics.position[1];
 		});
 
+		this.cue.position.set(this.whiteBall.position.x, this.whiteBall.position.y);
+		this.cue.rotation += 0.002;
+
 		this.renderer.render(this.stage);
+
 	}
 
 	get resource() {
