@@ -8,12 +8,12 @@ let resources = new Resources('resources');
 
 let renderer = new Renderer(resources.add(['bas_textures.json', 'balls.json']), 100);
 renderer.init();
+
 let physics = new Physics(renderer);
-physics.init();
+physics.init()
 
 window.renderer = renderer;
 window.resources = resources;
-window.physics = physics;
 
 console.log('render', renderer);
 console.log('resources', resources);

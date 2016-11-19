@@ -43,6 +43,12 @@ export default class Render {
 			balls: this.loadedResources['resources/balls.json'].textures
 		}
 
+		// Set balls length for loop which create balls in Physic class
+		this.ballsLength = Object.keys(this.textures.balls).length;
+
+		// emit physics class about success get request
+		this.physics.$emit('onSuccessRequest', this.ballsLength);
+
 		// Set pool table
 		this.scenes.poolScene.addChild(new PIXI.Sprite(this.textures.basic['8ballpoolset-transparent.png']));
 

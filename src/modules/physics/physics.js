@@ -6,17 +6,35 @@ export default class Physics {
 	constructor(renderer) {
 		this.renderer = renderer;
 		this.gravityBodies = [];
+		this._innerEvents = {};
 	}
 
 	init() {
 		this.world = new p2.World();
 		this.renderer.world = this.world;
+		this.renderer.physics = this;
 
 		this.updateGravity();
+		this.registerEvent('onSuccessRequest', this.addBolls.bind(this));
 
 
 		this.addBoards();
+		this.addBolls(this.renderer.ballsLength)
 	}
+
+	// Events functionality
+	registerEvent(name, callback) {
+		this._innerEvents[name] = callback;
+	}
+
+	$emit(event, data) {
+		this.$on(event, data);
+	}
+
+	$on(event, data) {
+		this._innerEvents[event](data);
+	}
+
 
 	addGravityBoies(body) {
 		if(body instanceof Array) {
@@ -40,8 +58,22 @@ export default class Physics {
 		});
 	}
 
-	addBolls() {
+	addBolls(length) {
+		let ballBody, ballShape;
 
+		for(let i = 0; i < length; i++) {
+			ballShape = new p2.Circle({radius: 0.2});
+			ballBody = new p2.Body({
+				mass: 5,
+				position: [ballShape.radius * i, ballShape.radius * i],
+				velocity: [5, -5]
+			});
+
+			console.log('success');
+
+			ballBody.addShape(ballShape);
+			this.world.addBody(ballBody);
+		}
 	}
 
 	addBoards() {
