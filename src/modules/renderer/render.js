@@ -106,7 +106,15 @@ export default class Render {
 
 		// Scale balls
 		ball.scale.set(1 / 100);
-		ball.anchor.set(0.5, 0.5)
+		ball.anchor.set(0.5, 0.5);
+
+		if(name === 'white ball') {
+			ball.whiteBall = true;
+			this.whiteBall = ball;
+
+			// Draw cue
+			this.drawCue();
+		}
 
 		this.balls.push({
 			physics: body,
@@ -114,7 +122,17 @@ export default class Render {
 		});
 
 		this.scenes.container.addChild(ball);
+	}
 
+	drawCue() {
+		let cue = new PIXI.Sprite(this.textures.basic['kuy.png']);
+
+		this.scenes.container.addChild(cue);
+		cue.position.set(this.whiteBall.position.x, this.whiteBall.position.y);
+		cue.anchor.x = 1.05
+		cue.anchor.y = 0.5
+
+		cue.scale.set(1 / 100);
 	}
 
 	animate(time) {
