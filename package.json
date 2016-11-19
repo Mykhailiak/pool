@@ -8,9 +8,6 @@
     "build": "NODE_ENV=development webpack --watch",
     "server": "webpack-dev-server --content-base public --output-pathinfo --watch --colors --devtool source-map --port 5000 --hot"
   },
-  "browser": {
-    "physics": "./bower_components/physics/build/physics.min.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Myhaylyak/pool.git"
