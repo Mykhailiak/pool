@@ -88,18 +88,20 @@ import * as PIXI from 'pixi.js';
 
 
 var renderer, stage, container, graphics, zoom, platform, platform2, platform3, platform4, platform5, platform6, boxBody2, boxShape2, graphics2,
-     world, boxShape, boxBody, planeBody, planeShape;
+     world, boxShape, boxBody, planeBody, planeShape, circle, circleShape, circleBody, newCircle
      init();
      animate();
      function init(){
          // Init p2.js
          world = new p2.World();
          // Add a box
-         boxShape = new p2.Box({ width: 2, height: 1 });
+         boxShape = new p2.Box({ width: 1, height: 1 });
          boxBody = new p2.Body({
              mass: 5,
              position:[0, 0],
-             angularVelocity: 3
+             // angularVelocity: 3,
+             velocity: [1, 1],
+             collisionResponse: true
          });
          boxBody.addShape(boxShape);
          world.addBody(boxBody);
@@ -108,19 +110,37 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
          boxBody2 = new p2.Body({
              mass: 5,
              position:[-1.8, 0],
-             angularVelocity: 2
+             angularVelocity: 2,
+             velocity: [-1, -1],
          });
          boxBody2.addShape(boxShape2);
          world.addBody(boxBody2);
 
+         window.balls = [];
+
+         // for(let i = 1; i <= 15; i++) {
+
+         circleShape = new p2.Circle({radius: 0.2});
+         circleBody = new p2.Body({
+             mass: 5,
+             position:[-2, 1],
+             // angularVelocity: 3,
+             velocity: [0, 0],
+             collisionResponse: true
+         });
+         circleBody.addShape(circleShape);
+         world.addBody(circleBody);
+         // }
+
+
          // Turn off global gravity
-         world.applyGravity=false;
+         world.applyGravity = false;
 
          // Keep track of which bodies you want to apply gravity on:
-         var gravityBodies=[boxBody, boxBody2];
+         var gravityBodies=[boxBody, boxBody2, circleBody];
 
          // And just before running world.step(), do this:
-         var gravity = p2.vec2.fromValues(0, -10),
+         var gravity = p2.vec2.fromValues(0, -9.8),
              gravityForce = p2.vec2.create();
          for(var i=0; i<gravityBodies.length; i++){
              var b =  gravityBodies[i];
@@ -128,14 +148,15 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
              p2.vec2.add(b.force,b.force,gravityForce);  // F_body += F_gravity
          }
 
-         // // Add a plane
+         // Add a plane
          // planeShape = new p2.Plane();
          // planeBody = new p2.Body({
          //    mass: 0,
-         //    position: [0, -20]
+         //    position: [0, -1]
          // });
          // planeBody.addShape(planeShape);
          // world.addBody(planeBody);
+
          // // Pixi.js zoom level
          zoom = 100;
          // Initialize the stage
@@ -248,7 +269,7 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
 
          				// We use a container inside the stage for all our content
          				// This enables us to zoom and translate the content
-         				container =     new PIXI.DisplayObjectContainer(),
+         				container = new PIXI.Container(),
          				stage.addChild(container);
          				// Add the canvas to the DOM
          				document.body.appendChild(renderer.view);
@@ -262,6 +283,11 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
          				graphics.beginFill(0xff0000);
          				graphics.drawRect(-boxShape.width/2, -boxShape.height/2, boxShape.width, boxShape.height);
          				container.addChild(graphics);
+
+                        circle = new PIXI.Graphics();
+                        circle.beginFill(0x9966FF);
+                        circle.drawCircle(0, 0, circleShape.radius)
+                        container.addChild(circle);
 
          				platform = new PIXI.Graphics();
          				platform.beginFill(0xff0000);
@@ -340,6 +366,9 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
 
          platform.position.x = platformBody1.position[0];
          platform.position.y = platformBody1.position[1];
+
+         circle.position.x = circleBody.position[0];
+         circle.position.y = circleBody.position[1];
 
          debugger;
 
