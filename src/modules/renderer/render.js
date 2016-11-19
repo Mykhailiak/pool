@@ -96,8 +96,10 @@ export default class Render {
 		}
 	}
 
-	drawBall(body, shape, index) {
-		let ball = new PIXI.Sprite(this.textures.balls[`ball${index}.png`]);
+	drawBall(body, shape, value) {
+		let name = typeof value === 'string' ? value : `ball${value}`;
+
+		let ball = new PIXI.Sprite(this.textures.balls[`${name}.png`]);
 
 		// Set position of sprite
 		ball.position.set(body.position[0], body.position[1]);

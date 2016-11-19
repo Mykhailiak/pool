@@ -47,20 +47,22 @@ export default class Physics {
 	}
 
 	addBolls(length) {
-		let ballBody, ballShape;
+		let ballBody, ballShape, argumentValue;
 
 		for(let i = 0; i < length; i++) {
 			ballShape = new p2.Circle({radius: 0.23});
 			ballBody = new p2.Body({
 				mass: 5,
 				position: [ballShape.radius * i, 0],
-				velocity: [5, -5]
+				velocity: [1, -1]
 			});
 
 			ballBody.addShape(ballShape);
 			this.world.addBody(ballBody);
 
-			this.renderer.drawBall(ballBody, ballShape, i);
+			argumentValue = i === length - 1 ? 'white ball' : i;
+
+			this.renderer.drawBall(ballBody, ballShape, argumentValue);
 		}
 	}
 
