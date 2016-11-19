@@ -44,10 +44,11 @@ module.exports = {
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			NODE_ENV: JSON.stringify(NODE_ENV),
+			NODE_ENV: JSON.stringify(NODE_ENV)
 		}),
 		new ExtractTextPlugin('style.css'),
 		new webpack.NoErrorsPlugin(),
-		new WebpackBuildNotifierPlugin(),
-	]
+		new WebpackBuildNotifierPlugin()
+	],
+	devtool: NODE_ENV === 'development' ? 'source-map' : null
 }
