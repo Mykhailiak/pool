@@ -20,7 +20,6 @@ export default class Physics {
 		this.updateGravity();
 		this.event.register('onSuccessRequest', this.addBolls.bind(this));
 
-
 		this.addBoards();
 		this.addBolls(this.renderer.ballsLength)
 	}
@@ -51,15 +50,17 @@ export default class Physics {
 		let ballBody, ballShape;
 
 		for(let i = 0; i < length; i++) {
-			ballShape = new p2.Circle({radius: 0.2});
+			ballShape = new p2.Circle({radius: 0.23});
 			ballBody = new p2.Body({
 				mass: 5,
-				position: [ballShape.radius * i, ballShape.radius * i],
+				position: [ballShape.radius * i, 0],
 				velocity: [5, -5]
 			});
 
 			ballBody.addShape(ballShape);
 			this.world.addBody(ballBody);
+
+			this.renderer.drawBall(ballBody, ballShape, i);
 		}
 	}
 

@@ -5,6 +5,7 @@ export default class Render {
 		this.rendererHeight = height;
 		this._resource = resources;
 		this.zoom = zoom;
+		this.balls = []
 	}
 
 	init() {
@@ -95,10 +96,34 @@ export default class Render {
 		}
 	}
 
+	drawBall(body, shape, index) {
+		let ball = new PIXI.Sprite(this.textures.balls[`ball${index}.png`]);
+
+		// Set position of sprite
+		ball.position.set(body.position[0], body.position[1]);
+
+		// Scale balls
+		ball.scale.set(1 / 100);
+		ball.anchor.set(0.5, 0.5)
+
+		this.balls.push({
+			physics: body,
+			view: ball
+		});
+
+		this.scenes.container.addChild(ball);
+
+	}
+
 	animate(time) {
 		requestAnimationFrame(this.animate.bind(this));
 
 		this.world.step(1 / 60);
+
+		this.balls.forEach((ball) => {
+			ball.view.position.x = ball.physics.position[0]
+			ball.view.position.y = ball.physics.position[1]
+		});
 
 		this.renderer.render(this.stage);
 	}
