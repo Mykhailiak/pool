@@ -1,2 +1,3 @@
-import './modules/';
+import './main.js';
+// import './modules/';
 import './themes/';

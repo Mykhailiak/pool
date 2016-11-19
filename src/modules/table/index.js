@@ -100,7 +100,6 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
              mass: 5,
              position:[0, 0],
              // angularVelocity: 3,
-             velocity: [1, 1],
              collisionResponse: true
          });
          boxBody.addShape(boxShape);
@@ -111,7 +110,6 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
              mass: 5,
              position:[-1.8, 0],
              angularVelocity: 2,
-             velocity: [-1, -1],
          });
          boxBody2.addShape(boxShape2);
          world.addBody(boxBody2);
@@ -123,9 +121,9 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
          circleShape = new p2.Circle({radius: 0.2});
          circleBody = new p2.Body({
              mass: 5,
-             position:[-2, 1],
+             position:[-2, 1.5],
              // angularVelocity: 3,
-             velocity: [0, 0],
+             velocity: [5, -5],
              collisionResponse: true
          });
          circleBody.addShape(circleShape);
@@ -140,7 +138,7 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
          var gravityBodies=[boxBody, boxBody2, circleBody];
 
          // And just before running world.step(), do this:
-         var gravity = p2.vec2.fromValues(0, -9.8),
+         var gravity = p2.vec2.fromValues(0, 10),
              gravityForce = p2.vec2.create();
          for(var i=0; i<gravityBodies.length; i++){
              var b =  gravityBodies[i];
@@ -249,9 +247,11 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
          PIXI.loader
          	.add('resources/bas_textures.json')
          	.add('resources/balls.json')
-         	.load(() => {
+         	.load((e) => {
          		let basic = PIXI.loader.resources['resources/bas_textures.json'].textures,
          				ballsTexture = PIXI.loader.resources['resources/balls.json'].textures;
+
+                debugger;
 
          		// game scene containers:
          				let gameScene = new PIXI.Container(),
@@ -369,8 +369,6 @@ var renderer, stage, container, graphics, zoom, platform, platform2, platform3, 
 
          circle.position.x = circleBody.position[0];
          circle.position.y = circleBody.position[1];
-
-         debugger;
 
          // Render scene
          renderer.render(stage);
