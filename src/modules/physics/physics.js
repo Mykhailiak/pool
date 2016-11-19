@@ -1,40 +1,29 @@
 import p2 from 'p2/build/p2.min.js';
 import tableLimits from './../../libs/table_limits.json';
 
+import EventEmmiter from './../event_emmiter/event_emmiter.js';
+
 
 export default class Physics {
 	constructor(renderer) {
 		this.renderer = renderer;
 		this.gravityBodies = [];
-		this._innerEvents = {};
 	}
 
 	init() {
+		this.event = new EventEmmiter();
+
 		this.world = new p2.World();
 		this.renderer.world = this.world;
 		this.renderer.physics = this;
 
 		this.updateGravity();
-		this.registerEvent('onSuccessRequest', this.addBolls.bind(this));
+		this.event.register('onSuccessRequest', this.addBolls.bind(this));
 
 
 		this.addBoards();
 		this.addBolls(this.renderer.ballsLength)
 	}
-
-	// Events functionality
-	registerEvent(name, callback) {
-		this._innerEvents[name] = callback;
-	}
-
-	$emit(event, data) {
-		this.$on(event, data);
-	}
-
-	$on(event, data) {
-		this._innerEvents[event](data);
-	}
-
 
 	addGravityBoies(body) {
 		if(body instanceof Array) {
@@ -68,8 +57,6 @@ export default class Physics {
 				position: [ballShape.radius * i, ballShape.radius * i],
 				velocity: [5, -5]
 			});
-
-			console.log('success');
 
 			ballBody.addShape(ballShape);
 			this.world.addBody(ballBody);
