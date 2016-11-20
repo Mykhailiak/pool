@@ -32,7 +32,7 @@ module.exports = {
 			{test: /\.js$/, exclude: path.join(__dirname, 'node_modules'), loader: 'babel'},
 			{test: /\.png$/, loader: 'url?limit=100000'},
 			{test: /\.gif$/, loader: 'url?limit=10000'},
-			{test: /\.(jpg|png|woff|woff2|eot|svg|ttf)(\?.*)?$/, loader: 'file'}
+			{test: /\.(jpg|woff|woff2|eot|svg|ttf)(\?.*)?$/, loader: 'file'}
 		],
 		postLoaders: [
 			{
