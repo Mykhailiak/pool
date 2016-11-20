@@ -77,8 +77,6 @@ export default class Render {
 		this.scenes.container.position.set(this.renderer.width / 2, this.renderer.height / 2);
 		this.scenes.container.scale.set(this.zoom);
 
-		this.scenes.container.on('mousedown',function(){alert('down');},false);
-
 		// Add all scenes to stage
 		this.addToStage(this.scenes);
 
