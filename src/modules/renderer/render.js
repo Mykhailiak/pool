@@ -5,7 +5,9 @@ export default class Render {
 		this.rendererHeight = height;
 		this._resource = resources;
 		this.zoom = zoom;
-		this.balls = []
+		this.balls = [];
+		this.animateTurns = []
+		this.cueRotateCoef = 0;
 	}
 
 	init() {
@@ -13,6 +15,7 @@ export default class Render {
 		this.stage = new PIXI.Container();
 
 		this.initScenes();
+		this.initDOMEvents();
 
 		document.body.appendChild(this.renderer.view);
 
@@ -33,6 +36,16 @@ export default class Render {
 			poolScene: new PIXI.Container(),
 			container: new PIXI.Container()
 		}
+	}
+
+	initDOMEvents() {
+		this.renderer.view.addEventListener('mousemove', (e) => {
+			this.cueOffsetX = this.cue.getGlobalPosition();
+
+			this.cueRotateCoef = (Math.atan2(e.pageY, e.pageX) / Math.PI * 180) / 5;
+
+			console.log(this.cueRotateCoef);
+		});
 	}
 
 	setup(events) {
@@ -64,6 +77,14 @@ export default class Render {
 		// Add all scenes to stage
 		this.addToStage(this.scenes);
 
+		//Add render balls animate turns
+		this.addToAniamteTurns(() => {
+			this.balls.forEach((ball) => {
+				ball.view.position.x = ball.physics.position[0];
+				ball.view.position.y = ball.physics.position[1];
+			});
+		});
+
 		this.animate();
 
 	}
@@ -75,6 +96,12 @@ export default class Render {
 				this.stage.addChild(scenes[scene]);
 			}
 		}
+	}
+
+	addToAniamteTurns(callback) {
+		this.animateTurns.push(callback);
+
+		return this;
 	}
 
 	calculateFigureCoords(shape) {
@@ -133,6 +160,16 @@ export default class Render {
 		this.cue.anchor.y = 0.5
 
 		this.cue.scale.set(1 / 100);
+
+		// Add rotation callback to animate turns
+		this.addToAniamteTurns(() => {
+			this.cue.position.set(this.whiteBall.position.x, this.whiteBall.position.y);
+			this.cue.rotation = this.cueRotateCoef;
+		});
+	}
+
+	rotateCue() {
+
 	}
 
 	animate(time) {
@@ -140,13 +177,9 @@ export default class Render {
 
 		this.world.step(1 / 60);
 
-		this.balls.forEach((ball) => {
-			ball.view.position.x = ball.physics.position[0];
-			ball.view.position.y = ball.physics.position[1];
-		});
-
-		this.cue.position.set(this.whiteBall.position.x, this.whiteBall.position.y);
-		this.cue.rotation += 0.002;
+		this.animateTurns.forEach((turn) => {
+			turn();
+		}, this);
 
 		this.renderer.render(this.stage);
 

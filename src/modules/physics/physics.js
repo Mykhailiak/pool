@@ -53,7 +53,7 @@ export default class Physics {
 			ballShape = new p2.Circle({radius: 0.23});
 			ballBody = new p2.Body({
 				mass: 5,
-				position: [ballShape.radius * i, Math.floor(Math.random() * 5)],
+				position: [ballShape.radius * i, 0],
 				velocity: [0, 0]
 			});
 
