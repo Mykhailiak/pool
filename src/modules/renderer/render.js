@@ -39,13 +39,16 @@ export default class Render {
 	}
 
 	initDOMEvents() {
-		this.renderer.view.addEventListener('mousemove', (e) => {
-			this.cueOffsetX = this.cue.getGlobalPosition();
 
-			this.cueRotateCoef = (Math.atan2(e.pageY, e.pageX) / Math.PI * 180) / 5;
+		document.addEventListener('mousemove', (e) => {
+
+			if(!this.cue.static) {
+				this.cueRotateCoef = (Math.atan2(e.pageY, e.pageX) / Math.PI * 180) / 3;
+			}
 
 			console.log(this.cueRotateCoef);
 		});
+
 	}
 
 	setup(events) {
@@ -73,6 +76,8 @@ export default class Render {
 		// Addition container. #fixme!
 		this.scenes.container.position.set(this.renderer.width / 2, this.renderer.height / 2);
 		this.scenes.container.scale.set(this.zoom);
+
+		this.scenes.container.on('mousedown',function(){alert('down');},false);
 
 		// Add all scenes to stage
 		this.addToStage(this.scenes);
