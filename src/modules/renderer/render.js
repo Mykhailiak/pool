@@ -11,7 +11,7 @@ export default class Render {
 	}
 
 	init() {
-		this.renderer = PIXI.autoDetectRenderer(this.rendererWidth, this.rendererHeight, {backgroundColor: 0x046131});
+		this.renderer = PIXI.autoDetectRenderer(this.rendererWidth, this.rendererHeight, {transparent: true});
 		this.stage = new PIXI.Container();
 
 		this.initScenes();
