@@ -12,7 +12,7 @@ export default class Render {
 
 	init() {
 		this.renderer = PIXI.autoDetectRenderer(this.rendererWidth, this.rendererHeight, {transparent: true});
-		this.stage = new PIXI.Container();
+		this.stage = new PIXI.Stage();
 
 		this.initScenes();
 		this.initDOMEvents();
@@ -40,13 +40,33 @@ export default class Render {
 
 	initDOMEvents() {
 
+		this.powerOffset = 0;
 		document.addEventListener('mousemove', (e) => {
 
 			if(!this.cue.static) {
 				this.cueRotateCoef = (Math.atan2(e.pageY, e.pageX) / Math.PI * 180) / 3;
-			}
+			} else if(this.cue.static) {
+				if(e.pageY < this.powerOffset) {
+					this.cue.anchor.x < 1.1 ? this.cue.anchor.x += 0.002 : this.cue.anchor.x = 1.1;
+				} else {
+					this.cue.anchor.x > 1.05 ? this.cue.anchor.x -= 0.002 : this.cue.anchor.x = 1.05;
+				}
 
-			console.log(this.cueRotateCoef);
+				this.powerOffset = e.pageY;
+			}
+		});
+
+		document.addEventListener('click', (e) => {
+			if(!this.cue.static) {
+				this.cue.static = true;
+			} else {
+				this.cue.anchor.x = 1.035;
+
+				setTimeout(() => {
+					this.cue.static = false;
+					this.cue.anchor.x = 1.05;
+				}, 200)
+			}
 		});
 
 	}
@@ -67,7 +87,8 @@ export default class Render {
 		this.physics.event.emit('onSuccessRequest', this.ballsLength);
 
 		// Set pool table
-		this.scenes.poolScene.addChild(new PIXI.Sprite(this.textures.basic['8ballpoolset-transparent.png']));
+		let tableSprite = new PIXI.Sprite(this.textures.basic['8ballpoolset-transparent.png']);
+		this.scenes.poolScene.addChild(tableSprite);
 
 
 		// Set position of poolScenes
@@ -159,8 +180,12 @@ export default class Render {
 
 		this.scenes.container.addChild(this.cue);
 		this.cue.position.set(this.whiteBall.position.x, this.whiteBall.position.y);
-		this.cue.anchor.x = 1.05
-		this.cue.anchor.y = 0.5
+		this.cue.anchor.x = 1.05;
+		this.cue.anchor.y = 0.5;
+
+		this.cue.powerOld = this.cue.anchor.x;
+
+		this.cue.static = false;
 
 		this.cue.scale.set(1 / 100);
 

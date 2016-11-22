@@ -17,6 +17,9 @@ export default class Physics {
 		this.renderer.world = this.world;
 		this.renderer.physics = this;
 
+		this.bollsMaterial = new p2.Material();
+		this.boardMaterial = new p2.Material();
+
 		this.updateGravity();
 		this.event.register('onSuccessRequest', this.addBolls.bind(this));
 
@@ -34,7 +37,7 @@ export default class Physics {
 		return this;
 	}
 
-	updateGravity(x = 0, y = -9.8) {
+	updateGravity(x = 0, y = 0) {
 		this.world.applyGravity = false;
 
 		let gravity = p2.vec2.fromValues(x, y),
@@ -50,9 +53,12 @@ export default class Physics {
 		let ballBody, ballShape, argumentValue;
 
 		for(let i = 0; i < length; i++) {
-			ballShape = new p2.Circle({radius: 0.23});
+			ballShape = new p2.Circle({
+				radius: 0.23,
+				material: this.bollsMaterial
+			});
 			ballBody = new p2.Body({
-				mass: 5,
+				mass: 1,
 				position: [ballShape.radius * i, 0],
 				velocity: [0, 0]
 			});
@@ -64,6 +70,17 @@ export default class Physics {
 
 			this.renderer.drawBall(ballBody, ballShape, argumentValue);
 		}
+
+		this.addPhysicsForce();
+	}
+
+	addPhysicsForce() {
+		let forces = new p2.ContactMaterial(this.boardMaterial, this.bollsMaterial, {
+			friction: 0.6,
+			restitution: 0.8
+		});
+
+		this.world.addContactMaterial(forces);
 	}
 
 	addBoards() {
@@ -75,11 +92,10 @@ export default class Physics {
 				position: [board.x, board.y]
 			});
 
-
 			shape = new p2.Box({
 				width: board.width,
 				height: board.height,
-				material: new p2.Material()
+				material: this.boardMaterial
 			});
 
 			body.addShape(shape);
