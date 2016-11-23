@@ -1,5 +1,7 @@
 import p2 from 'p2/build/p2.min.js';
+
 import tableLimits from './../../libs/table_limits.json';
+import tablePockets from './../../libs/table_pocket.json';
 
 import EventEmmiter from './../event_emmiter/event_emmiter.js';
 
@@ -19,12 +21,22 @@ export default class Physics {
 
 		this.bollsMaterial = new p2.Material();
 		this.boardMaterial = new p2.Material();
+		this.pocketMaterial = new p2.Material();
+
+		this.initEvents();
 
 		this.updateGravity();
 		this.event.register('onSuccessRequest', this.addBolls.bind(this));
 
 		this.addBoards();
-		this.addBolls(this.renderer.ballsLength)
+		this.addPockets();
+		this.addBolls(this.renderer.ballsLength);
+	}
+
+	initEvents() {
+		this.world.on('beginContact',function(event){
+				// console.log('event', event);
+		});
 	}
 
 	addGravityBoies(body) {
@@ -86,13 +98,11 @@ export default class Physics {
 
 		let speed = power < 1.06 ? power * 4 : power * 10;
 
-		this.whiteBall.body.velocity = this.velocityFromRotation(coef, speed)
+		this.whiteBall.body.velocity = this.velocityFromRotation(coef, speed);
+
 	}
 
 	velocityFromRotation(angle, speed = 1, point) {
-
-		console.log(speed);
-
 		return [(Math.cos(angle) * speed), (Math.sin(angle) * speed)];
 	}
 
@@ -128,7 +138,30 @@ export default class Physics {
 		});
 	}
 
+	addPockets() {
+		let body, shape;
+		this.pockets.forEach((pocket) => {
+			body = new p2.Body({
+				mass: 0,
+				position: [pocket.x, pocket.y]
+			});
+			shape = new p2.Circle({
+				radius: pocket.radius,
+				material: this.pocketMaterial
+			});
+
+			body.addShape(shape);
+			this.world.addBody(body);
+
+			this.renderer.drawPockets(shape, body);
+		});
+	}
+
 	get boards() {
 		return tableLimits.boards;
+	}
+
+	get pockets() {
+		return tablePockets.pockets;
 	}
 }

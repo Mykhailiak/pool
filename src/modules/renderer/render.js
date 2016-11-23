@@ -41,20 +41,7 @@ export default class Render {
 	initDOMEvents() {
 
 		this.powerOffset = 0;
-		document.addEventListener('mousemove', (e) => {
-
-			if(!this.cue.static) {
-				this.cueRotateCoef = (Math.atan2(e.pageY, e.pageX) / Math.PI * 180) / 3;
-			} else if(this.cue.static) {
-				if(e.pageY < this.powerOffset) {
-					this.cue.anchor.x < 1.1 ? this.cue.anchor.x += 0.002 : this.cue.anchor.x = 1.1;
-				} else {
-					this.cue.anchor.x > 1.05 ? this.cue.anchor.x -= 0.002 : this.cue.anchor.x = 1.05;
-				}
-
-				this.powerOffset = e.pageY;
-			}
-		});
+		document.addEventListener('mousemove', this.rotateCue.bind(this));
 
 		document.addEventListener('click', (e) => {
 			if(!this.cue.static) {
@@ -149,6 +136,18 @@ export default class Render {
 		}
 	}
 
+	drawPockets(shape, body) {
+		let circle = new PIXI.Graphics();
+
+		console.log(shape, body);
+
+		circle.beginFill(0x9966FF);
+		circle.drawCircle(0, 0, body.radius);
+		circle.position.set(body.position[0], body.position[1])
+
+		this.scenes.container.addChild(circle);
+	}
+
 	drawBall(body, shape, value) {
 		let name = typeof value === 'string' ? value : `ball${value}`;
 
@@ -198,8 +197,18 @@ export default class Render {
 		});
 	}
 
-	rotateCue() {
+	rotateCue(e) {
+		if(!this.cue.static) {
+			this.cueRotateCoef = (Math.atan2(e.pageY, e.pageX) / Math.PI * 180) / 3;
+		} else if(this.cue.static) {
+			if(e.pageY < this.powerOffset) {
+				this.cue.anchor.x < 1.1 ? this.cue.anchor.x += 0.002 : this.cue.anchor.x = 1.1;
+			} else {
+				this.cue.anchor.x > 1.05 ? this.cue.anchor.x -= 0.002 : this.cue.anchor.x = 1.05;
+			}
 
+			this.powerOffset = e.pageY;
+		}
 	}
 
 	animate(time) {
