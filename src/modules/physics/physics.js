@@ -60,18 +60,40 @@ export default class Physics {
 			ballBody = new p2.Body({
 				mass: 1,
 				position: [ballShape.radius * i, 0],
-				velocity: [0, 0]
+				velocity: [1, 1]
 			});
 
 			ballBody.addShape(ballShape);
 			this.world.addBody(ballBody);
 
-			argumentValue = i === length - 1 ? 'white ball' : i;
+			if(i === length - 1) {
+				argumentValue = 'white ball';
+				this.whiteBall = {
+					body: ballBody,
+					shape: ballShape
+				};
+			} else {
+				argumentValue = i;
+			}
 
 			this.renderer.drawBall(ballBody, ballShape, argumentValue);
 		}
 
 		this.addPhysicsForce();
+	}
+
+	hitWhiteBall(coef, power) {
+
+		let speed = power < 1.06 ? power * 4 : power * 10;
+
+		this.whiteBall.body.velocity = this.velocityFromRotation(coef, speed)
+	}
+
+	velocityFromRotation(angle, speed = 1, point) {
+
+		console.log(speed);
+
+		return [(Math.cos(angle) * speed), (Math.sin(angle) * speed)];
 	}
 
 	addPhysicsForce() {

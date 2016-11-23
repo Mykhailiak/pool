@@ -60,6 +60,8 @@ export default class Render {
 			if(!this.cue.static) {
 				this.cue.static = true;
 			} else {
+				this.physics.hitWhiteBall(this.cueRotateCoef, this.cue.anchor.x);
+
 				this.cue.anchor.x = 1.035;
 
 				setTimeout(() => {
