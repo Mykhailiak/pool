@@ -28,7 +28,7 @@ module.exports = {
 		loaders: [
 			{test: /\.json$/,loader: 'json'},
 			{test: /(\.css|-css)$/, loader: ExtractTextPlugin.extract('style', 'css!postcss')},
-			{test: /\.styl$/, loader: ExtractTextPlugin.extract('css!csslint?configFile=./configs/csslint!postcss!stylus?resolve url')},
+			{test: /\.styl$/, loader: ExtractTextPlugin.extract('css!csslint?configFile=./configs/csslint!stylus?resolve url')},
 			{test: /\.js$/, exclude: path.join(__dirname, 'node_modules'), loader: 'babel'},
 			{test: /\.png$/, loader: 'url?limit=100000'},
 			{test: /\.gif$/, loader: 'url?limit=10000'},
